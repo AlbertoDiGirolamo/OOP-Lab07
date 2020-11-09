@@ -3,6 +3,9 @@
  */
 package it.unibo.oop.lab.enum2;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import it.unibo.oop.lab.socialnetwork.SocialNetworkUserImpl;
 import it.unibo.oop.lab.socialnetwork.User;
 
@@ -30,7 +33,7 @@ public class Sport2SocialNetworkUserImpl<U extends User> extends SocialNetworkUs
      * 
      * add a field to keep track of the set of sports followed/done by a user
      */
-
+	static Set<Sport> setSportFollowed; 
     /**
      * Builds a new {@link Sport2SocialNetworkUserImpl}.
      * 
@@ -61,6 +64,7 @@ public class Sport2SocialNetworkUserImpl<U extends User> extends SocialNetworkUs
      */
     public Sport2SocialNetworkUserImpl(final String name, final String surname, final String user, final int userAge) {
         super(name, surname, user, userAge);
+
     }
 
     /*
@@ -75,7 +79,9 @@ public class Sport2SocialNetworkUserImpl<U extends User> extends SocialNetworkUs
      *            a sport followed/done by the user
      */
     public void addSport(final Sport sport) {
-
+    	if(!this.setSportFollowed.contains(sport)) {
+    		this.setSportFollowed.add(sport);
+    	}
     }
 
     /**
@@ -87,13 +93,33 @@ public class Sport2SocialNetworkUserImpl<U extends User> extends SocialNetworkUs
      * @return true if user likes sport s
      */
     public boolean likesSport(final Sport s) {
-        return false;
+    	return this.setSportFollowed.contains(s);
+   		
+    	
     }
 
     /*
      * [METHODS] NEW METHODS TO IMPLEMENT FROM SCRATCH
      */
-
+    public Set<Sport> getIndividualSports() {
+    	Set<Sport> setSave = new HashSet<>();
+    	for(Sport s: this.setSportFollowed) {
+    		if(s.isIndividualSport(s)) {
+    			setSave.add(s);
+    		}
+    	}
+    	return setSave;
+    	
+    }
+    public Set<Sport> getSportPracticedInPlace(Place p) {
+    	Set<Sport> setSave = new HashSet<>();
+    	for(Sport s: this.setSportFollowed) {
+    		if(s.getPlace(s) == p) {
+    			setSave.add(s);
+    		}
+    	}
+    	return setSave; 
+    }
     /**
      * Returns the set of individual sports followed/practiced by this user: a
      * sport is individual if the number of team member is = 1.
